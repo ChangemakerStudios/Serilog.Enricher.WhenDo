@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Serilog.Enricher.WhenDo</id>
         <version>1.0.0</version>
@@ -11,6 +11,9 @@
         <description>Serilog's Fluent Property Manager: Conditionally add or remove properties based your logs. E.g. When the exception is CreditCardException, remove property "SensitiveInfo".</description>
         <language>en-US</language>
         <tags>serilog logging enricher extras</tags>
+        <dependencies>
+            <dependency id="Serilog" version="[1.5.14,)" />
+        </dependencies>
     </metadata>
     <files>
         <file src="bin\Release\Serilog.Enricher.WhenDo.dll" target="lib\net40\Serilog.Enricher.WhenDo.dll" />
