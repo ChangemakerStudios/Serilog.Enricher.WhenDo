@@ -6,7 +6,7 @@
         <authors>CaptiveAire Systems</authors>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
-        <iconUrl>http://raw2.github.com/CaptiveAire/Seq.App.YouTrack/master/asset/seq-app-youtrack.png</iconUrl>
+        <iconUrl>http://raw2.github.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Serilog's Fluent Property Manager: Conditionally add or remove properties based your logs. E.g. When the exception is CreditCardException, remove property "SensitiveInfo".</description>
         <language>en-US</language>

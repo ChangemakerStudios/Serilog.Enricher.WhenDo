@@ -1,7 +1,8 @@
 # Serilog.Enricher.WhenDo
 
-Serilog encricher that adds a fluent API to configure rules for modifying properties.
+![Build Status](https://ci.appveyor.com/api/projects/status/u7qvdcryijag4ura/branch/master?svg=true)
 
+Serilog enricher that adds a fluent API to configure rules for modifying properties on the fly.
 
 # Usage
 
@@ -19,3 +20,6 @@ var log =
         .Enrich.When().IsExceptionOf<SpecialServiceException>().AddOrUpdateProperty("SpecialServiceEndpoint", _settings.SpecialServiceEndpoint)
         .CreateLogger();
 ```
+
+### Icon
+Copyright "Solution" by Arthur Shlain from the Noun Project
