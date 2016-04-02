@@ -6,14 +6,14 @@
         <authors>CaptiveAire Systems</authors>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
-        <iconUrl>http://raw2.github.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Serilog's Fluent Property Manager: Conditionally add or remove properties based your logs. E.g. When the exception is CreditCardException, remove property "SensitiveInfo".</description>
         <language>en-US</language>
         <tags>serilog logging enricher extras</tags>
     </metadata>
     <files>
-        <file src="bin\Release\Serilog.Enricher.WhenDo.dll" target="lib\net45\Serilog.Enricher.WhenDo.dll" />
-        <file src="bin\Release\Serilog.Enricher.WhenDo.pdb" target="lib\net45\Serilog.Enricher.WhenDo.pdb" />
+        <file src="bin\Release\Serilog.Enricher.WhenDo.dll" target="lib\net40\Serilog.Enricher.WhenDo.dll" />
+        <file src="bin\Release\Serilog.Enricher.WhenDo.pdb" target="lib\net40\Serilog.Enricher.WhenDo.pdb" />
     </files>
 </package>
