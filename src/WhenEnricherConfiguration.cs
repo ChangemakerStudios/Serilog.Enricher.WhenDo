@@ -55,7 +55,7 @@ namespace Serilog.Enricher.WhenDo
             return CreateWhenDoEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration AnyProperty(params string[] properties)
+        public WhenDoEnricherConfiguration HasProperty(params string[] properties)
         {
             Func<string[], Func<LogEvent, bool>> when = p => e => e.Properties.Keys.Intersect(p).Any();
 
