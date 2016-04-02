@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Serilog.Enricher.WhenDo</id>
+        <version>1.0.0</version>
+        <authors>CaptiveAire Systems</authors>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+        <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
+        <iconUrl>http://raw2.github.com/CaptiveAire/Seq.App.YouTrack/master/asset/seq-app-youtrack.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Serilog's Fluent Property Manager: Conditionally add or remove properties based your logs. E.g. When the exception is CreditCardException, remove property "SensitiveInfo".</description>
+        <language>en-US</language>
+        <tags>serilog logging enricher extras</tags>
+    </metadata>
+    <files>
+        <file src="bin\Release\Serilog.Enricher.WhenDo.dll" target="lib\net45\Serilog.Enricher.WhenDo.dll" />
+        <file src="bin\Release\Serilog.Enricher.WhenDo.pdb" target="lib\net45\Serilog.Enricher.WhenDo.pdb" />
+    </files>
+</package>
