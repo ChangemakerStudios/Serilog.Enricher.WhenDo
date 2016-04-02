@@ -6,7 +6,7 @@ Serilog enricher that adds a fluent API to configure rules for modifying propert
 
 # Usage
 
-Add as many clauses to your configuration to support the optional rules:
+Add multiple clauses to your configuration to support your optional rules:
 
 ```csharp
 var log = 
@@ -17,7 +17,9 @@ var log =
         // processing error otherwise we may expose the credit card in the logs.
         .Enrich.When().IsExceptionOf<CreditCardPaymentException>().RemovePropertyIfPresent("RawUrl")
         // When the the Special Service fails, log the current endpoint
-        .Enrich.When().IsExceptionOf<SpecialServiceException>().AddOrUpdateProperty("SpecialServiceEndpoint", _settings.SpecialServiceEndpoint)
+        .Enrich.When().IsExceptionOf<SpecialServiceException>().AddOrUpdateProperty("SpecialServiceEndpoint", _settings.SpecialServiceEndpoint, true)
+        // If one of the two possible properties is there, remove "UnnecessaryProperty"
+        .Enrich.When().HasProperty("PossibleProperty", "PossiblePropertyOther").RemovePropertyIfPresent("UnnecessaryProperty")
         .CreateLogger();
 ```
 
