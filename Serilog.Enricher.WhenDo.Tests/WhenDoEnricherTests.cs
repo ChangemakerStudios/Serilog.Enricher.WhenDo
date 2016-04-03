@@ -73,5 +73,53 @@ namespace Serilog.Enricher.WhenDo.Tests
             @event = eventQueueSink.Events.Pop();
             @event.Properties.Keys.Should().Contain(property);
         }
+
+        [Test]
+        public void IfLogEventIsLevelPropertyShouldBeAdded()
+        {
+            var eventQueueSink = new LogEventStackSink();
+
+            string property = "TestProperty";
+
+            var logger =
+                new LoggerConfiguration()
+                    .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
+                    .Enrich.When().IsLevelEqualTo(LogEventLevel.Fatal).AddPropertyIfAbsent(property, "Whatever")
+                    .CreateLogger();
+
+            // property should not exist
+            logger.Information("Hello");
+            var @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().NotContain(property);
+
+            // property should exist
+            logger.Fatal("Hello");
+            @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().Contain(property);
+        }
+
+        [Test]
+        public void IfLogEventIsHigherThenLevelPropertyShouldBeRemoved()
+        {
+            var eventQueueSink = new LogEventStackSink();
+
+            string property = "TestProperty";
+
+            var logger =
+                new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
+                    .Enrich.WithProperty(property, 1)
+                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).RemovePropertyIfPresent(property)
+                    .CreateLogger();
+
+            // property should not exist
+            logger.Information("Hello");
+            var @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().Contain(property);
+
+            // property should exist
+            logger.Fatal("Hello");
+            @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().NotContain(property);
+        }
     }
 }

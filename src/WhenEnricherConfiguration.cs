@@ -41,16 +41,16 @@ namespace Serilog.Enricher.WhenDo
             return CreateWhenDoEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration IsLevelLessThen(LogEventLevel level)
+        public WhenDoEnricherConfiguration IsLevelOrLess(LogEventLevel level)
         {
-            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level < l;
+            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level <= l;
 
             return CreateWhenDoEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration IsLevelGreaterThen(LogEventLevel level)
+        public WhenDoEnricherConfiguration IsLevelOrHigher(LogEventLevel level)
         {
-            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level > l;
+            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level >= l;
 
             return CreateWhenDoEnricherConfiguration(when(level));
         }
