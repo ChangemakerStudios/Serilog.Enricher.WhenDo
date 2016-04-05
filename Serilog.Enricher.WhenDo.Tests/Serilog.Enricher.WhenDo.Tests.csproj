@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LogEventStackSink.cs" />
+    <Compile Include="StringHelpersTests.cs" />
     <Compile Include="WhenDoEnricherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

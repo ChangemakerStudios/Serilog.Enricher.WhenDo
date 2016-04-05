@@ -20,92 +20,119 @@ using Serilog.Events;
 
 namespace Serilog.Enricher.WhenDo
 {
+    using System.Collections.Generic;
+
     public class WhenEnricherConfiguration
     {
-        readonly LoggerEnrichmentConfiguration _config;
+        readonly LoggerEnrichmentConfiguration _enrichmentConfiguration;
 
-        public WhenEnricherConfiguration(LoggerEnrichmentConfiguration config)
+        readonly Func<LogEvent, bool>[] _whenFuncs;
+        
+        public WhenEnricherConfiguration(LoggerEnrichmentConfiguration enrichmentConfiguration, IEnumerable<Func<LogEvent, bool>> conditions = null)
         {
-            _config = config;
+            _enrichmentConfiguration = enrichmentConfiguration;
+            _whenFuncs = (conditions ?? new Func<LogEvent, bool>[0]).ToArray();
         }
 
-        WhenDoEnricherConfiguration CreateWhenDoEnricherConfiguration(Func<LogEvent, bool> when)
+        WhenEnricherConfiguration GetComposedWhenEnricherConfiguration(params Func<LogEvent, bool>[] when)
         {
-            return new WhenDoEnricherConfiguration(func => _config.With(new WhenDoEnricher(when, func)));
+            return new WhenEnricherConfiguration(_enrichmentConfiguration, _whenFuncs.Concat(when));
         }
 
-        public WhenDoEnricherConfiguration IsLevelEqualTo(LogEventLevel level)
+        public WhenDoEnricherConfiguration Do()
+        {
+            return
+                new WhenDoEnricherConfiguration(
+                    func => _enrichmentConfiguration.With(new WhenDoEnricher(_whenFuncs, func)));
+        }
+
+        public WhenEnricherConfiguration IsLevelEqualTo(LogEventLevel level)
         {
             Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level == l;
 
-            return CreateWhenDoEnricherConfiguration(when(level));
+            return GetComposedWhenEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration IsLevelOrLess(LogEventLevel level)
+        public WhenEnricherConfiguration IsLevelOrLess(LogEventLevel level)
         {
             Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level <= l;
 
-            return CreateWhenDoEnricherConfiguration(when(level));
+            return GetComposedWhenEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration IsLevelOrHigher(LogEventLevel level)
+        public WhenEnricherConfiguration IsLevelOrHigher(LogEventLevel level)
         {
             Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level >= l;
 
-            return CreateWhenDoEnricherConfiguration(when(level));
+            return GetComposedWhenEnricherConfiguration(when(level));
         }
 
-        public WhenDoEnricherConfiguration HasProperty(params string[] properties)
+        public WhenEnricherConfiguration HasProperty(params string[] properties)
         {
             Func<string[], Func<LogEvent, bool>> when = p => e => e.Properties.Keys.Intersect(p).Any();
 
-            return CreateWhenDoEnricherConfiguration(when(properties));
+            return GetComposedWhenEnricherConfiguration(when(properties));
         }
 
-        public WhenDoEnricherConfiguration MissingProperty(params string[] properties)
+        public WhenEnricherConfiguration MissingProperty(params string[] properties)
         {
             Func<string[], Func<LogEvent, bool>> when = p => e => !e.Properties.Keys.Intersect(p).Any();
 
-            return CreateWhenDoEnricherConfiguration(when(properties));
+            return GetComposedWhenEnricherConfiguration(when(properties));
         }
 
-        public WhenDoEnricherConfiguration IsException(params Type[] exceptionTypes)
+        public WhenEnricherConfiguration IsException(params Type[] exceptionTypes)
         {
             Func<Type[], Func<LogEvent, bool>> when = es => e => e.Exception != null && es.Contains(e.Exception.GetType());
 
-            return CreateWhenDoEnricherConfiguration(when(exceptionTypes));
+            return GetComposedWhenEnricherConfiguration(when(exceptionTypes));
         }
 
-        public WhenDoEnricherConfiguration IsExceptionOf<TException>()
+        public WhenEnricherConfiguration IsExceptionOf<TException>()
         {
             return IsException(typeof(TException));
         }
 
-        public WhenDoEnricherConfiguration NoException()
+        public WhenEnricherConfiguration NoException()
         {
             Func<LogEvent, bool> when = e => e.Exception == null;
 
-            return CreateWhenDoEnricherConfiguration(when);
+            return GetComposedWhenEnricherConfiguration(when);
         }
 
-        public WhenDoEnricherConfiguration AnyException()
+        public WhenEnricherConfiguration AnyException()
         {
             Func<LogEvent, bool> when = e => e.Exception != null;
 
-            return CreateWhenDoEnricherConfiguration(when);
+            return GetComposedWhenEnricherConfiguration(when);
         }
 
-        public WhenDoEnricherConfiguration IsNotException(params Type[] exceptionTypes)
+        public WhenEnricherConfiguration IsNotException(params Type[] exceptionTypes)
         {
             Func<Type[], Func<LogEvent, bool>> when = es => e => e.Exception != null && !es.Contains(e.Exception.GetType());
 
-            return CreateWhenDoEnricherConfiguration(when(exceptionTypes));
+            return GetComposedWhenEnricherConfiguration(when(exceptionTypes));
         }
 
-        public WhenDoEnricherConfiguration IsNotExceptionOf<TException>()
+        public WhenEnricherConfiguration IsNotExceptionOf<TException>()
         {
             return IsNotException(typeof(TException));
         }
 
+        public WhenEnricherConfiguration FromSourceContext(params string[] sources)
+        {
+            Func<string[], Func<LogEvent, bool>> when = p => e =>
+            {
+                var sourceContext = e.Properties.Where(_ => _.Key == "SourceContext").Select(_ => _.Value.ToString().RemoveQuotes()).FirstOrDefault();
+                return p.Contains(sourceContext);
+            };
+
+            return GetComposedWhenEnricherConfiguration(when(sources));
+        }
+
+        public WhenEnricherConfiguration FromSourceContextOf<T>()
+        {
+            return FromSourceContext(typeof(T).FullName);
+        }
     }
 }

@@ -36,14 +36,31 @@ namespace Serilog.Enricher.WhenDo.Tests
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().HasProperty(property).RemovePropertyIfPresent(property)
+                    .Enrich.When().HasProperty(property).Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             logger.Information("Hello");
             var @event = eventQueueSink.Events.Pop();
             @event.Properties.Keys.Should().NotContain(property);
         }
-        
+
+        [Test]
+        public void IfLogEventSourceIsMatchRemoveProperty()
+        {
+            var eventQueueSink = new LogEventStackSink();
+            string property = "SourceContext";
+
+            var logger =
+                new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
+                    .Enrich.WithProperty(property, 1)
+                    .Enrich.When().FromSourceContextOf<WhenDoEnricherTests>().Do().RemovePropertyIfPresent(property)
+                    .CreateLogger();
+
+            logger.ForContext<WhenDoEnricherTests>().Fatal("Super Fatal");
+            var @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().NotContain(property);
+        }
+
         [Test]
         public void IfLogEventHasExceptionRemovePropertyWorksCorrectly()
         {
@@ -55,7 +72,7 @@ namespace Serilog.Enricher.WhenDo.Tests
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().IsExceptionOf<InvalidCastException>().RemovePropertyIfPresent(property)
+                    .Enrich.When().IsExceptionOf<InvalidCastException>().Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             // doesn't remove property...
@@ -84,7 +101,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
-                    .Enrich.When().IsLevelEqualTo(LogEventLevel.Fatal).AddPropertyIfAbsent(property, "Whatever")
+                    .Enrich.When().IsLevelEqualTo(LogEventLevel.Fatal).Do().AddPropertyIfAbsent(property, "Whatever")
                     .CreateLogger();
 
             // property should not exist
@@ -108,7 +125,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).RemovePropertyIfPresent(property)
+                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             // property should not exist
@@ -118,6 +135,32 @@ namespace Serilog.Enricher.WhenDo.Tests
 
             // property should exist
             logger.Fatal("Hello");
+            @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().NotContain(property);
+        }
+
+        [Test]
+        public void IfMultipleConditionsPresentDoShouldOnlyRunAfterAllSatisfied()
+        {
+            var eventQueueSink = new LogEventStackSink();
+
+            string property = "TestProperty";
+
+            var logger =
+                new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
+                    .Enrich.WithProperty(property, 1)
+                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).AnyException().Do().RemovePropertyIfPresent(property)
+                    .CreateLogger();
+
+            logger.Information("Hello");
+            var @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().Contain(property);
+
+            logger.Fatal("Hello");
+            @event = eventQueueSink.Events.Pop();
+            @event.Properties.Keys.Should().Contain(property);
+
+            logger.Fatal(new Exception("Anything"), "Hello");
             @event = eventQueueSink.Events.Pop();
             @event.Properties.Keys.Should().NotContain(property);
         }

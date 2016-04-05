@@ -16,23 +16,25 @@ using System;
 
 using Serilog.Core;
 using Serilog.Events;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Serilog.Enricher.WhenDo
 {
     public class WhenDoEnricher : ILogEventEnricher
     {
         readonly Action<LogEvent, ILogEventPropertyFactory> _doFunc;
-        readonly Func<LogEvent, bool> _whenFunc;
+        readonly Func<LogEvent, bool>[] _whenFuncs;
 
-        public WhenDoEnricher(Func<LogEvent, bool> whenFunc, Action<LogEvent, ILogEventPropertyFactory> doFunc)
+        public WhenDoEnricher(IEnumerable<Func<LogEvent, bool>> whenFuncs, Action<LogEvent, ILogEventPropertyFactory> doFunc)
         {
-            _whenFunc = whenFunc;
+            _whenFuncs = whenFuncs.ToArray();
             _doFunc = doFunc;
         }
 
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            if (_whenFunc(logEvent)) _doFunc(logEvent, propertyFactory);
+            if (_whenFuncs.All(s => s(logEvent))) _doFunc(logEvent, propertyFactory);
         }
     }
 }
