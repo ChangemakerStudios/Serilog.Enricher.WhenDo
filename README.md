@@ -15,11 +15,11 @@ var log =
         .Enrich.With<HttpRequestEnricher>()
         // We need to remove the RawUrl property if there is a payment
         // processing error otherwise we may expose the credit card in the logs.
-        .Enrich.When().IsExceptionOf<CreditCardPaymentException>().RemovePropertyIfPresent("RawUrl")
+        .Enrich.When().IsExceptionOf<CreditCardPaymentException>().Do().RemovePropertyIfPresent("RawUrl")
         // When the the Special Service fails, log the current endpoint
-        .Enrich.When().IsExceptionOf<SpecialServiceException>().AddOrUpdateProperty("SpecialServiceEndpoint", _settings.SpecialServiceEndpoint, true)
+        .Enrich.When().IsExceptionOf<SpecialServiceException>().Do().AddOrUpdateProperty("SpecialServiceEndpoint", _settings.SpecialServiceEndpoint, true)
         // If one of the two possible properties is there, remove "UnnecessaryProperty"
-        .Enrich.When().HasProperty("PossibleProperty", "PossiblePropertyOther").RemovePropertyIfPresent("UnnecessaryProperty")
+        .Enrich.When().HasProperty("PossibleProperty", "PossiblePropertyOther").Do().RemovePropertyIfPresent("UnnecessaryProperty")
         .CreateLogger();
 ```
 
