@@ -19,8 +19,6 @@ using Serilog.Events;
 
 namespace Serilog.Enricher.WhenDo
 {
-    using System.Linq;
-
     public class WhenDoEnricherConfiguration
     {
         readonly Func<Action<LogEvent, ILogEventPropertyFactory>, LoggerConfiguration> _doFunction;
