@@ -27,6 +27,8 @@ var log =
 
 ##### Send/Pipe to Another Logger
 
+SendTo sends a copy of an event to another logger if the critiera matches. PipeTo only sends the event to another logger if the criteria matches.
+
 ```csharp
 var backupLogger = new LoggerConfiguration().WriteTo.Trace.CreateLogger();
 
