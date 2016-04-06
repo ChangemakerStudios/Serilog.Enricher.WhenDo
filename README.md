@@ -31,7 +31,8 @@ var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogge
 var log = 
     new LoggerConfiguration()
         .WriteTo.Trace()
-        // Sends a copy of the event to the targetedLogger
+        // Sends a copy of the event to the targetedLogger --
+        // both loggers will get the same event.
         .When().FromSourceContext<AccountingService>().Do().SendTo(targetedLogger)
         .CreateLogger();
 ```
@@ -44,8 +45,8 @@ var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogge
 var log = 
     new LoggerConfiguration()
         .WriteTo.Trace()
-        // Pipes all events that match criteria to the targetedLogger -- 
-        // does not log to this logger
+        // Pipes all events that match criteria to the targetedLogger.
+        // "this" logger will not receive the event.
         .When().FromSourceContext<ChattyService>().Do().PipeTo(targetedLogger)
         .CreateLogger();
 ```
