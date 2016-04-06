@@ -44,32 +44,36 @@ namespace Serilog.Enricher.WhenDo
             return _doEnrich(action(properties));
         }
 
-        public LoggerConfiguration SendTo(ILogger pipedLogger)
+        public LoggerConfiguration SendTo(ILogger sendToLogger)
         {
-            if (pipedLogger == null) throw new ArgumentNullException(nameof(pipedLogger));
+            if (sendToLogger == null) throw new ArgumentNullException(nameof(sendToLogger));
 
             Func<ILogger, Func<LogEvent, bool>> action = (l) => (e) =>
             {
-                // send event into secondary logger
+                // write event to other logger
                 l.Write(e);
+
+                // log event to this logger as well
                 return true;
             };
 
-            return _doFilter(action(pipedLogger));
+            return _doFilter(action(sendToLogger));
         }
 
-        public LoggerConfiguration PipeTo(ILogger targetedLogger)
+        public LoggerConfiguration PipeTo(ILogger pipeToLogger)
         {
-            if (targetedLogger == null) throw new ArgumentNullException(nameof(targetedLogger));
+            if (pipeToLogger == null) throw new ArgumentNullException(nameof(pipeToLogger));
 
             Func<ILogger, Func<LogEvent, bool>> action = (l) => (e) =>
             {
-                // write to secondary logger, but don't log to this logger...
+                // write event to other logger
                 l.Write(e);
+
+                // do not log event to this logger (disable event)
                 return false;
             };
 
-            return _doFilter(action(targetedLogger));
+            return _doFilter(action(pipeToLogger));
         }
 
         public LoggerConfiguration AddPropertyIfAbsent(string name, object value, bool destructureObject = false)
