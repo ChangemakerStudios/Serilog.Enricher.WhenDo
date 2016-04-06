@@ -24,26 +24,27 @@ namespace Serilog.Enricher.WhenDo
 
     public class WhenEnricherConfiguration
     {
-        readonly LoggerEnrichmentConfiguration _enrichmentConfiguration;
+        readonly LoggerConfiguration _configuration;
 
         readonly Func<LogEvent, bool>[] _whenFuncs;
         
-        public WhenEnricherConfiguration(LoggerEnrichmentConfiguration enrichmentConfiguration, IEnumerable<Func<LogEvent, bool>> conditions = null)
+        public WhenEnricherConfiguration(LoggerConfiguration configuration, IEnumerable<Func<LogEvent, bool>> conditions = null)
         {
-            _enrichmentConfiguration = enrichmentConfiguration;
+            _configuration = configuration;
             _whenFuncs = (conditions ?? new Func<LogEvent, bool>[0]).ToArray();
         }
 
         WhenEnricherConfiguration GetComposedWhenEnricherConfiguration(params Func<LogEvent, bool>[] when)
         {
-            return new WhenEnricherConfiguration(_enrichmentConfiguration, _whenFuncs.Concat(when));
+            return new WhenEnricherConfiguration(_configuration, _whenFuncs.Concat(when));
         }
 
-        public WhenDoEnricherConfiguration Do()
+        public DoConfiguration Do()
         {
             return
-                new WhenDoEnricherConfiguration(
-                    func => _enrichmentConfiguration.With(new WhenDoEnricher(_whenFuncs, func)));
+                new DoConfiguration(
+                    func => _configuration.Enrich.With(new WhenDoEnricher(_whenFuncs, func)),
+                    func => _configuration.Filter.With(new WhenDoPipeFilter(_whenFuncs, func)));
         }
 
         public WhenEnricherConfiguration IsLevelEqualTo(LogEventLevel level)
@@ -88,7 +89,7 @@ namespace Serilog.Enricher.WhenDo
             return GetComposedWhenEnricherConfiguration(when(exceptionTypes));
         }
 
-        public WhenEnricherConfiguration IsExceptionOf<TException>()
+        public WhenEnricherConfiguration IsException<TException>()
         {
             return IsException(typeof(TException));
         }
@@ -130,7 +131,7 @@ namespace Serilog.Enricher.WhenDo
             return GetComposedWhenEnricherConfiguration(when(sources));
         }
 
-        public WhenEnricherConfiguration FromSourceContextOf<T>()
+        public WhenEnricherConfiguration FromSourceContext<T>()
         {
             return FromSourceContext(typeof(T).FullName);
         }

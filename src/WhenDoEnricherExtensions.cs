@@ -28,19 +28,6 @@ namespace Serilog.Enricher
             if (config == null)
                 throw new ArgumentNullException(nameof(config));
 
-            return new WhenEnricherConfiguration(config.Enrich);
-        }
-
-        /// <summary>
-        /// When the criteria is met.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        /// <returns></returns>
-        public static WhenEnricherConfiguration When(this LoggerEnrichmentConfiguration config)
-        {
-            if (config == null)
-                throw new ArgumentNullException(nameof(config));
-
             return new WhenEnricherConfiguration(config);
         }
     }

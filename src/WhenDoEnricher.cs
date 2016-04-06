@@ -21,7 +21,7 @@ using System.Linq;
 
 namespace Serilog.Enricher.WhenDo
 {
-    public class WhenDoEnricher : ILogEventEnricher
+    public class WhenDoEnricher : ILogEventEnricher, ILogEventFilter
     {
         readonly Action<LogEvent, ILogEventPropertyFactory> _doFunc;
         readonly Func<LogEvent, bool>[] _whenFuncs;
@@ -35,6 +35,11 @@ namespace Serilog.Enricher.WhenDo
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             if (_whenFuncs.All(s => s(logEvent))) _doFunc(logEvent, propertyFactory);
+        }
+
+        public bool IsEnabled(LogEvent logEvent)
+        {
+            return true;
         }
     }
 }

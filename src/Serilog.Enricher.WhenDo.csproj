@@ -45,8 +45,9 @@
     <Compile Include="WhenDoEnricherExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WhenDoEnricher.cs" />
-    <Compile Include="WhenDoEnricherConfiguration.cs" />
+    <Compile Include="DoConfiguration.cs" />
     <Compile Include="WhenEnricherConfiguration.cs" />
+    <Compile Include="WhenDoPipeFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

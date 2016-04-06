@@ -36,7 +36,7 @@ namespace Serilog.Enricher.WhenDo.Tests
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().HasProperty(property).Do().RemovePropertyIfPresent(property)
+                    .When().HasProperty(property).Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             logger.Information("Hello");
@@ -53,7 +53,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().FromSourceContextOf<WhenDoEnricherTests>().Do().RemovePropertyIfPresent(property)
+                    .When().FromSourceContext<WhenDoEnricherTests>().Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             logger.ForContext<WhenDoEnricherTests>().Fatal("Super Fatal");
@@ -72,7 +72,7 @@ namespace Serilog.Enricher.WhenDo.Tests
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().IsExceptionOf<InvalidCastException>().Do().RemovePropertyIfPresent(property)
+                    .When().IsException<InvalidCastException>().Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             // doesn't remove property...
@@ -101,7 +101,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
-                    .Enrich.When().IsLevelEqualTo(LogEventLevel.Fatal).Do().AddPropertyIfAbsent(property, "Whatever")
+                    .When().IsLevelEqualTo(LogEventLevel.Fatal).Do().AddPropertyIfAbsent(property, "Whatever")
                     .CreateLogger();
 
             // property should not exist
@@ -125,7 +125,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).Do().RemovePropertyIfPresent(property)
+                    .When().IsLevelOrHigher(LogEventLevel.Error).Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             // property should not exist
@@ -149,7 +149,7 @@ namespace Serilog.Enricher.WhenDo.Tests
             var logger =
                 new LoggerConfiguration().WriteTo.Sink(eventQueueSink, LogEventLevel.Verbose)
                     .Enrich.WithProperty(property, 1)
-                    .Enrich.When().IsLevelOrHigher(LogEventLevel.Error).AnyException().Do().RemovePropertyIfPresent(property)
+                    .When().IsLevelOrHigher(LogEventLevel.Error).AnyException().Do().RemovePropertyIfPresent(property)
                     .CreateLogger();
 
             logger.Information("Hello");

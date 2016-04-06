@@ -19,13 +19,16 @@ using Serilog.Events;
 
 namespace Serilog.Enricher.WhenDo
 {
-    public class WhenDoEnricherConfiguration
+    public class DoConfiguration
     {
-        readonly Func<Action<LogEvent, ILogEventPropertyFactory>, LoggerConfiguration> _doFunction;
+        readonly Func<Action<LogEvent, ILogEventPropertyFactory>, LoggerConfiguration> _doEnrich;
 
-        public WhenDoEnricherConfiguration(Func<Action<LogEvent, ILogEventPropertyFactory>, LoggerConfiguration> doFunction)
+        readonly Func<Func<LogEvent, bool>, LoggerConfiguration> _doFilter;
+
+        public DoConfiguration(Func<Action<LogEvent, ILogEventPropertyFactory>, LoggerConfiguration> doEnrich, Func<Func<LogEvent, bool>, LoggerConfiguration> doFilter)
         {
-            _doFunction = doFunction;
+            _doEnrich = doEnrich;
+            _doFilter = doFilter;
         }
 
         public LoggerConfiguration RemovePropertyIfPresent(params string[] properties)
@@ -38,7 +41,35 @@ namespace Serilog.Enricher.WhenDo
                     }
                 };
 
-            return _doFunction(action(properties));
+            return _doEnrich(action(properties));
+        }
+
+        public LoggerConfiguration PipeTo(ILogger pipedLogger)
+        {
+            if (pipedLogger == null) throw new ArgumentNullException(nameof(pipedLogger));
+
+            Func<ILogger, Func<LogEvent, bool>> action = (l) => (e) =>
+            {
+                // pipe event into secondary logger
+                l.Write(e);
+                return true;
+            };
+
+            return _doFilter(action(pipedLogger));
+        }
+
+        public LoggerConfiguration RouteTo(ILogger targetedLogger)
+        {
+            if (targetedLogger == null) throw new ArgumentNullException(nameof(targetedLogger));
+
+            Func<ILogger, Func<LogEvent, bool>> action = (l) => (e) =>
+            {
+                // write to secondary logger, but don't log to this logger...
+                l.Write(e);
+                return false;
+            };
+
+            return _doFilter(action(targetedLogger));
         }
 
         public LoggerConfiguration AddPropertyIfAbsent(string name, object value, bool destructureObject = false)
@@ -46,7 +77,7 @@ namespace Serilog.Enricher.WhenDo
             Func<string, object, bool, Action<LogEvent, ILogEventPropertyFactory>> action = (n, v, d) => (e, f) =>
                 { e.AddPropertyIfAbsent(f.CreateProperty(n, v, d)); };
 
-            return _doFunction(action(name, value, destructureObject));
+            return _doEnrich(action(name, value, destructureObject));
         }
 
         public LoggerConfiguration AddOrUpdateProperty(string name, object value, bool destructureObject = false)
@@ -54,7 +85,7 @@ namespace Serilog.Enricher.WhenDo
             Func<string, object, bool, Action<LogEvent, ILogEventPropertyFactory>> action = (n, v, d) => (e, f) =>
                 { e.AddOrUpdateProperty(f.CreateProperty(n, v, d)); };
 
-            return _doFunction(action(name, value, destructureObject));
+            return _doEnrich(action(name, value, destructureObject));
         }
     }
 }
