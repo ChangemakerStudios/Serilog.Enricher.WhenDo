@@ -23,7 +23,7 @@ var log =
         .CreateLogger();
 ```
 
-# Send to Secondary Logger
+##### Send to Secondary Logger
 
 ```csharp
 var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogger();
@@ -36,7 +36,7 @@ var log =
         .CreateLogger();
 ```
 
-# Pipe to Secondary Logger
+##### Pipe to Secondary Logger
 
 ```csharp
 var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogger();
