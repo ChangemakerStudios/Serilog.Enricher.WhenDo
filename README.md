@@ -8,7 +8,7 @@ Serilog extra that adds a fluent API to configure rules for modifying properties
 
 ##### Property Modification
 
-Add/Remove/Update properties based on the criteria.
+Add/Remove/Update properties based on a criteria.
 
 ```csharp
 var log = 
