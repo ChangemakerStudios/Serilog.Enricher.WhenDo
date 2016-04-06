@@ -8,7 +8,7 @@
         <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Serilog's Fluent Property Manager: Conditionally add or remove properties based your logs. E.g. When the exception is CreditCardException, remove property "SensitiveInfo".</description>
+        <description>WHEN log events met a criteria, DO allow modifying properties as well as sending/piping to secondary logging instances.</description>
         <language>en-US</language>
         <tags>serilog logging enricher extras</tags>
         <dependencies>

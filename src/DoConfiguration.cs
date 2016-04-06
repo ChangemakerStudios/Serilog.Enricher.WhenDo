@@ -44,13 +44,13 @@ namespace Serilog.Enricher.WhenDo
             return _doEnrich(action(properties));
         }
 
-        public LoggerConfiguration PipeTo(ILogger pipedLogger)
+        public LoggerConfiguration SendTo(ILogger pipedLogger)
         {
             if (pipedLogger == null) throw new ArgumentNullException(nameof(pipedLogger));
 
             Func<ILogger, Func<LogEvent, bool>> action = (l) => (e) =>
             {
-                // pipe event into secondary logger
+                // send event into secondary logger
                 l.Write(e);
                 return true;
             };
@@ -58,7 +58,7 @@ namespace Serilog.Enricher.WhenDo
             return _doFilter(action(pipedLogger));
         }
 
-        public LoggerConfiguration RouteTo(ILogger targetedLogger)
+        public LoggerConfiguration PipeTo(ILogger targetedLogger)
         {
             if (targetedLogger == null) throw new ArgumentNullException(nameof(targetedLogger));
 

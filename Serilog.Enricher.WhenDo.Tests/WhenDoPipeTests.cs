@@ -22,7 +22,7 @@
             var logger =
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventStackSink, LogEventLevel.Verbose)
-                    .When().FromSourceContext<WhenDoPipeTests>().Do().PipeTo(secondaryLogger)
+                    .When().FromSourceContext<WhenDoPipeTests>().Do().SendTo(secondaryLogger)
                     .CreateLogger();
 
             logger.Information("Hello");
@@ -47,7 +47,7 @@
             var logger =
                 new LoggerConfiguration()
                     .WriteTo.Sink(eventStackSink, LogEventLevel.Verbose)
-                    .When().FromSourceContext<WhenDoPipeTests>().Do().RouteTo(secondaryLogger)
+                    .When().FromSourceContext<WhenDoPipeTests>().Do().PipeTo(secondaryLogger)
                     .CreateLogger();
 
             logger.Information("Hello");
