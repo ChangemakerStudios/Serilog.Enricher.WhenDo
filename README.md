@@ -6,7 +6,9 @@ Serilog extra that adds a fluent API to configure rules for modifying properties
 
 # Usage
 
-Add multiple clauses to your configuration to support your optional rules:
+##### Property Modification
+
+Add/Remove/Update properties based on the criteria.
 
 ```csharp
 var log = 
@@ -23,31 +25,22 @@ var log =
         .CreateLogger();
 ```
 
-##### Send to Secondary Logger
+##### Send/Pipe to Another Logger
 
 ```csharp
-var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogger();
+var backupLogger = new LoggerConfiguration().WriteTo.Trace.CreateLogger();
+
+var specialLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogger();
 
 var log = 
     new LoggerConfiguration()
         .WriteTo.Trace()
-        // Sends a copy of the event to the targetedLogger --
+        // Sends a copy of the event to the backupLogger --
         // both loggers will get the same event.
-        .When().FromSourceContext<AccountingService>().Do().SendTo(targetedLogger)
-        .CreateLogger();
-```
-
-##### Pipe to Secondary Logger
-
-```csharp
-var targetedLogger = new LoggerConfiguration().WriteTo.SpecialSink().CreateLogger();
-
-var log = 
-    new LoggerConfiguration()
-        .WriteTo.Trace()
-        // Pipes all events that match criteria to the targetedLogger.
+        .When().FromSourceContext<AccountingService>().Do().SendTo(backupLogger)
+        // Pipes all events that match criteria to the specialLogger.
         // "this" logger will not receive the event.
-        .When().FromSourceContext<ChattyService>().Do().PipeTo(targetedLogger)
+        .When().FromSourceContext<ChattyService>().Do().PipeTo(specialLogger)
         .CreateLogger();
 ```
 
