@@ -23,8 +23,6 @@ namespace Serilog.Enricher.WhenDo
 
     public class WhenEnricherConfiguration
     {
-        public static ILogger DiagnosticLogger = new LoggerConfiguration().CreateLogger();
-
         readonly LoggerConfiguration _configuration;
 
         readonly Func<LogEvent, bool>[] _whenFuncs;
@@ -33,8 +31,6 @@ namespace Serilog.Enricher.WhenDo
             LoggerConfiguration configuration,
             IEnumerable<Func<LogEvent, bool>> conditions = null)
         {
-            DiagnosticLogger.Verbose("WhenEnricherConfiguration Called");
-
             _configuration = configuration;
             _whenFuncs = (conditions ?? new Func<LogEvent, bool>[0]).ToArray();
         }

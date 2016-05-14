@@ -26,9 +26,6 @@ namespace Serilog.Enricher.WhenDo
         readonly Func<LogEvent, bool> _doFunc;
         readonly Func<LogEvent, bool>[] _whenFuncs;
 
-        static readonly ILogger _logger =
-            WhenEnricherConfiguration.DiagnosticLogger.ForContext<WhenDoPipeFilter>();
-
         public WhenDoPipeFilter(IEnumerable<Func<LogEvent, bool>> whenFuncs, Func<LogEvent, bool> doFunc)
         {
             _whenFuncs = whenFuncs.ToArray();
