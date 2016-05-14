@@ -22,9 +22,16 @@ using Serilog.Events;
 
 namespace Serilog.Enricher.WhenDo.Tests
 {
+    using System.Diagnostics;
+
     [TestFixture]
     public class WhenDoEnricherTests
     {
+        public WhenDoEnricherTests()
+        {
+            Serilog.Debugging.SelfLog.Out = Console.Error;
+        }
+
         [Test]
         public void IfLogEventHasPropertyRemovePropertyWorksCorrectly()
         {

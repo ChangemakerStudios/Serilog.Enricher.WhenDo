@@ -1,5 +1,6 @@
 ﻿namespace Serilog.Enricher.WhenDo.Tests
 {
+    using System;
     using System.Linq;
 
     using FluentAssertions;
@@ -11,6 +12,11 @@
     [TestFixture]
     public class WhenDoPipeTests
     {
+        public WhenDoPipeTests()
+        {
+            Serilog.Debugging.SelfLog.Out = Console.Error;
+        }
+
         [Test]
         public void PipeToSecondaryLoggerShouldMatchAndWriteToSecondaryLogger()
         {
