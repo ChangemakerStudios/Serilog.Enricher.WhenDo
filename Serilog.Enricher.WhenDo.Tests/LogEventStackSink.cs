@@ -21,10 +21,18 @@ namespace Serilog.Enricher.WhenDo.Tests
 {
     public class LogEventStackSink : ILogEventSink
     {
+        public Stack<string> Message { get; } = new Stack<string>();
         public Stack<LogEvent> Events { get; } = new Stack<LogEvent>();
         public void Emit(LogEvent logEvent)
         {
             this.Events.Push(logEvent);
+            this.Message.Push(logEvent.RenderMessage());
+        }
+
+        public void Clear()
+        {
+            this.Message.Clear();
+            this.Events.Clear();
         }
     }
 }

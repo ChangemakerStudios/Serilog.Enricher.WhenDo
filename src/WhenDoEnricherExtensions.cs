@@ -14,7 +14,6 @@
 
 using System;
 
-using Serilog.Configuration;
 using Serilog.Enricher.WhenDo;
 
 // ReSharper disable once CheckNamespace
