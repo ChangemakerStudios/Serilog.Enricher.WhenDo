@@ -62,7 +62,6 @@
                 new LoggerConfiguration().MinimumLevel.Verbose()
                     .Enrich.WithProperty("Primary", true)
                     .When().HasProperty("Redirect").Do().PipeTo(secondaryLogger)
-                    .WriteTo.Console()
                     .WriteTo.Sink(eventStackSink, LogEventLevel.Verbose)
                     .CreateLogger();
 

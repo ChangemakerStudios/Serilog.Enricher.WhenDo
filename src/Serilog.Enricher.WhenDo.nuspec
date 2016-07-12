@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Serilog.Enricher.WhenDo</id>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
         <authors>CaptiveAire Systems</authors>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
         <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
         <iconUrl>https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>WHEN log events met a criteria, DO allow modifying properties as well as sending/piping to secondary logging instances.</description>
+        <releaseNotes>v1.2: Upgraded to Serilog v2.0</releaseNotes>
         <language>en-US</language>
         <tags>serilog logging enricher extras</tags>
         <dependencies>
-            <dependency id="Serilog" version="[1.5.14,)" />
+            <dependency id="Serilog" version="[2.0.0,)" />
         </dependencies>
     </metadata>
     <files>
