@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png" width="54" height="40" /> Serilog.Enricher.WhenDo
+# <img src="https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png" width="32" height="32" /> Serilog.Enricher.WhenDo
 
 [![NuGet version](https://badge.fury.io/nu/Serilog.Enricher.WhenDo.svg)](https://badge.fury.io/nu/Serilog.Enricher.WhenDo) ![Build Status](https://ci.appveyor.com/api/projects/status/u7qvdcryijag4ura/branch/master?svg=true)
 
