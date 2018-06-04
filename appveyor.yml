@@ -7,5 +7,5 @@ before_build:
 - dotnet restore
 
 after_build:
-- dotnet pack .\src\lib\Serilog.Enricher.WhenDo.csproj -version %APPVEYOR_BUILD_VERSION%
-- appveyor PushArtifact .\src\lib\bin\Release\Serilog.Enricher.WhenDo.%APPVEYOR_BUILD_VERSION%.nupkg
+- dotnet pack  .\src\lib\Serilog.Enricher.WhenDo.csproj --configuration $(configuration) --version-suffix %APPVEYOR_BUILD_VERSION%
+- appveyor PushArtifact .\src\lib\bin\$(configuration)\Serilog.Enricher.WhenDo.%APPVEYOR_BUILD_VERSION%.nupkg

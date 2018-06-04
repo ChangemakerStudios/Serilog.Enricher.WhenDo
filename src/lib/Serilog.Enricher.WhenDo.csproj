@@ -10,7 +10,7 @@
   </PropertyGroup>
 
  <PropertyGroup Label="PackageInfo"> 
-    <PackageVersion>1.3.0</PackageVersion>
+    <PackageVersion>$(VersionSuffix)</PackageVersion>
     <Version>1.3.0</Version>
     <AssemblyVersion>1.3.0</AssemblyVersion>
     <FileVersion>1.3.0</FileVersion>        
