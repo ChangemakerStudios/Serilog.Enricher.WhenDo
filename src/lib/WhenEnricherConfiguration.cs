@@ -41,10 +41,14 @@ namespace Serilog.Enricher.WhenDo
         public DoConfiguration Do() => new DoConfiguration(DoEnrich, DoFilter);
 
         LoggerConfiguration DoFilter(Func<LogEvent, bool> func)
-            => _configuration.Filter.With(new WhenDoPipeFilter(_whenFuncs, func));
+        {
+            return this._configuration.Filter.With(new WhenDoPipeFilter(this._whenFuncs, func));
+        }
 
         LoggerConfiguration DoEnrich(Action<LogEvent, ILogEventPropertyFactory> func)
-            => _configuration.Enrich.With(new WhenDoEnricher(_whenFuncs, func));
+        {
+            return this._configuration.Enrich.With(new WhenDoEnricher(this._whenFuncs, func));
+        }
 
         public WhenEnricherConfiguration All() => GetComposedWhenEnricherConfiguration(s => true);
 
@@ -55,16 +59,16 @@ namespace Serilog.Enricher.WhenDo
 
         public WhenEnricherConfiguration IsLevelOrLess(LogEventLevel level)
         {
-            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level <= l;
+            Func<LogEvent, bool> When(LogEventLevel l) => e => e.Level <= l;
 
-            return GetComposedWhenEnricherConfiguration(when(level));
+            return GetComposedWhenEnricherConfiguration(When(level));
         }
 
         public WhenEnricherConfiguration IsLevelOrHigher(LogEventLevel level)
         {
-            Func<LogEventLevel, Func<LogEvent, bool>> when = l => e => e.Level >= l;
+            Func<LogEvent, bool> When(LogEventLevel l) => e => e.Level >= l;
 
-            return GetComposedWhenEnricherConfiguration(when(level));
+            return GetComposedWhenEnricherConfiguration(When(level));
         }
 
         public WhenEnricherConfiguration HasProperty(params string[] properties)
@@ -76,17 +80,26 @@ namespace Serilog.Enricher.WhenDo
 
         public WhenEnricherConfiguration MissingProperty(params string[] properties)
         {
-            Func<string[], Func<LogEvent, bool>> when = p => e => !e.Properties.Keys.Intersect(p).Any();
+            Func<LogEvent, bool> OuterWhen(string[] p)
+            {
+                bool InnerWhen(LogEvent e) => !e.Properties.Keys.Intersect(p).Any();
 
-            return GetComposedWhenEnricherConfiguration(when(properties));
+                return InnerWhen;
+            }
+
+            return GetComposedWhenEnricherConfiguration(OuterWhen(properties));
         }
 
         public WhenEnricherConfiguration IsException(params Type[] exceptionTypes)
         {
-            Func<Type[], Func<LogEvent, bool>> when =
-                es => e => e.Exception != null && es.Contains(e.Exception.GetType());
+            Func<LogEvent, bool> OuterWhen(Type[] es)
+            {
+                bool InnerWhen(LogEvent e) => e.Exception != null && es.Contains(e.Exception.GetType());
 
-            return GetComposedWhenEnricherConfiguration(when(exceptionTypes));
+                return InnerWhen;
+            }
+
+            return GetComposedWhenEnricherConfiguration(OuterWhen(exceptionTypes));
         }
 
         public WhenEnricherConfiguration IsException<TException>()
@@ -96,40 +109,48 @@ namespace Serilog.Enricher.WhenDo
 
         public WhenEnricherConfiguration NoException()
         {
-            Func<LogEvent, bool> when = e => e.Exception == null;
+            bool When(LogEvent e) => e.Exception == null;
 
-            return GetComposedWhenEnricherConfiguration(when);
+            return GetComposedWhenEnricherConfiguration(When);
         }
 
         public WhenEnricherConfiguration AnyException()
         {
-            Func<LogEvent, bool> when = e => e.Exception != null;
+            bool When(LogEvent e) => e.Exception != null;
 
-            return GetComposedWhenEnricherConfiguration(when);
+            return GetComposedWhenEnricherConfiguration((Func<LogEvent, bool>)When);
         }
 
         public WhenEnricherConfiguration IsNotException(params Type[] exceptionTypes)
         {
-            Func<Type[], Func<LogEvent, bool>> when =
-                es => e => e.Exception != null && !es.Contains(e.Exception.GetType());
+            Func<LogEvent, bool> OuterWhen(Type[] es)
+            {
+                bool InnerWhen(LogEvent e) => e.Exception != null && !es.Contains(e.Exception.GetType());
 
-            return GetComposedWhenEnricherConfiguration(when(exceptionTypes));
+                return InnerWhen;
+            }
+
+            return GetComposedWhenEnricherConfiguration(OuterWhen(exceptionTypes));
         }
 
         public WhenEnricherConfiguration IsNotExceptionOf<TException>() => IsNotException(typeof(TException));
 
         public WhenEnricherConfiguration FromSourceContext(params string[] sources)
         {
-            Func<string[], Func<LogEvent, bool>> when = p => e =>
+            Func<LogEvent, bool> OuterWhen(string[] p)
             {
-                var sourceContext =
-                    e.Properties.Where(_ => _.Key == "SourceContext")
+                bool InnerWhen(LogEvent e)
+                {
+                    var sourceContext = e.Properties.Where(_ => _.Key == "SourceContext")
                         .Select(_ => _.Value.ToString().RemoveQuotes())
                         .FirstOrDefault();
-                return p.Contains(sourceContext);
-            };
+                    return p.Contains(sourceContext);
+                }
 
-            return GetComposedWhenEnricherConfiguration(when(sources));
+                return InnerWhen;
+            }
+
+            return GetComposedWhenEnricherConfiguration(OuterWhen(sources));
         }
 
         public WhenEnricherConfiguration FromSourceContext<T>()
