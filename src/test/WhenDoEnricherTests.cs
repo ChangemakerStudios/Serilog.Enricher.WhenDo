@@ -1,4 +1,4 @@
-﻿// Copyright 2016 CaptiveAire Systems
+﻿// Copyright 2016-2018 CaptiveAire Systems
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,18 +18,17 @@ using FluentAssertions;
 
 using NUnit.Framework;
 
+using Serilog.Debugging;
 using Serilog.Events;
 
 namespace Serilog.Enricher.WhenDo.Tests
 {
-    using System.Diagnostics;
-
     [TestFixture]
     public class WhenDoEnricherTests
     {
         public WhenDoEnricherTests()
         {
-            Serilog.Debugging.SelfLog.Out = Console.Error;
+            SelfLog.Enable(s => Console.Error.WriteLine(s));
         }
 
         [Test]
