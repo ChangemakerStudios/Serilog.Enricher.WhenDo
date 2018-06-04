@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
-        <id>Serilog.Enricher.WhenDo</id>
-        <version>1.2.0</version>
-        <authors>CaptiveAire Systems</authors>
-        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-        <projectUrl>https://github.com/CaptiveAire/Serilog.Enricher.WhenDo</projectUrl>
-        <iconUrl>https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png</iconUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>WHEN log events met a criteria, DO allow modifying properties as well as sending/piping to secondary logging instances.</description>
-        <releaseNotes>v1.2: Upgraded to Serilog v2.0</releaseNotes>
+        <id>$id$</id>
+        <version>$version$</version>
+        <authors>$authors$</authors>
+        <licenseUrl>$licenseUrl$</licenseUrl>
+        <projectUrl>$projectUrl$</projectUrl>
+        <iconUrl>$iconUrl$</iconUrl>
+        <description>$description$</description>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>        
+        <releaseNotes>v1.3: Upgraded to .NET Core SDK</releaseNotes>
         <language>en-US</language>
         <tags>serilog logging enricher extras</tags>
         <dependencies>
@@ -17,7 +17,11 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\Serilog.Enricher.WhenDo.dll" target="lib\net40\Serilog.Enricher.WhenDo.dll" />
-        <file src="bin\Release\Serilog.Enricher.WhenDo.pdb" target="lib\net40\Serilog.Enricher.WhenDo.pdb" />
+        <file src="bin\$config$\net45\Serilog.Enricher.WhenDo.dll" target="lib\net45" />
+        <file src="bin\$config$\net45\Serilog.Enricher.WhenDo.pdb" target="lib\net45" />
+        <file src="bin\$config$\net45\Serilog.Enricher.WhenDo.xml" target="lib\net45" />
+        <file src="bin\$config$\netstandard2.0\Serilog.Enricher.WhenDo.dll" target="lib\netstandard2.0" />
+        <file src="bin\$config$\netstandard2.0\Serilog.Enricher.WhenDo.pdb" target="lib\netstandard2.0" />        
+        <file src="bin\$config$\netstandard2.0\Serilog.Enricher.WhenDo.xml" target="lib\netstandard2.0" />                
     </files>
 </package>
