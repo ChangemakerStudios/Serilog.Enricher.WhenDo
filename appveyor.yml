@@ -6,6 +6,6 @@ before_build:
 - dotnet restore
 
 after_build:
-- dotnet test .\src\lib\Serilog.Enricher.WhenDo.csproj /p:TargetFramework=NET45
+- dotnet test /p:TargetFramework=NET45
 - dotnet pack  .\src\lib\Serilog.Enricher.WhenDo.csproj --configuration %CONFIGURATION% --version-suffix %APPVEYOR_BUILD_VERSION%
 - appveyor PushArtifact .\src\lib\bin\%CONFIGURATION%\Serilog.Enricher.WhenDo.%APPVEYOR_BUILD_VERSION%.nupkg
