@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Enricher.WhenDo", "src\Serilog.Enricher.WhenDo.csproj", "{6C7E17FE-FBAF-42F7-BC43-62A1857C2271}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Enricher.WhenDo", "src\lib\Serilog.Enricher.WhenDo.csproj", "{6C7E17FE-FBAF-42F7-BC43-62A1857C2271}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Enricher.WhenDo.Tests", "Serilog.Enricher.WhenDo.Tests\Serilog.Enricher.WhenDo.Tests.csproj", "{363770F0-C12D-4087-BD7B-32E62A8C23E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Enricher.WhenDo.Tests", "src\test\Serilog.Enricher.WhenDo.Tests.csproj", "{363770F0-C12D-4087-BD7B-32E62A8C23E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C5527E01-2AF2-4949-9A01-B9B41BEC511C}"
 EndProject
@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{963EB3
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
 		README.md = README.md
-		src\Serilog.Enricher.WhenDo.nuspec = src\Serilog.Enricher.WhenDo.nuspec
 		Serilog.Enricher.WhenDo.png = Serilog.Enricher.WhenDo.png
 	EndProjectSection
 EndProject

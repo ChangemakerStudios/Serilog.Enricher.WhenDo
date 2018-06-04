@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{363770F0-C12D-4087-BD7B-32E62A8C23E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Serilog.Enricher.WhenDo.Tests</RootNamespace>
+    <AssemblyName>Serilog.Enricher.WhenDo.Tests</AssemblyName>    
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NoWarn>$(NoWarn);NU1605;CS1591</NoWarn>       
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.*" />
+    <PackageReference Include="FluentAssertions" Version="4.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />    
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Serilog.Enricher.WhenDo.csproj">
+      <Project>{6c7e17fe-fbaf-42f7-bc43-62a1857c2271}</Project>
+      <Name>Serilog.Enricher.WhenDo</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
