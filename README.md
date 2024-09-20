@@ -1,10 +1,15 @@
-# <img src="https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png" width="32" height="32" /> Serilog.Enricher.WhenDo
+# Warning: Superceeded Project
+Project is not maintained as all the features can be found better/more advanced in the excellent [Serilog Expressions](https://github.com/serilog/serilog-expressions).
+
+
+
+### <img src="https://raw.githubusercontent.com/CaptiveAire/Serilog.Enricher.WhenDo/master/Serilog.Enricher.WhenDo.png" width="32" height="32" /> Serilog.Enricher.WhenDo
 
 [![NuGet version](https://badge.fury.io/nu/Serilog.Enricher.WhenDo.svg)](https://badge.fury.io/nu/Serilog.Enricher.WhenDo) ![Build Status](https://ci.appveyor.com/api/projects/status/u7qvdcryijag4ura/branch/master?svg=true)
 
 Serilog extra that adds a fluent API to configure rules for modifying properties on the fly and piping events to secondary loggers.
 
-# Usage
+### Usage
 
 ##### Property Modification
 
