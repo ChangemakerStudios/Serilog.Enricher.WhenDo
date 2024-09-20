@@ -1,5 +1,5 @@
 # Warning: Superceeded Project
-Project is not maintained as all the features can be found better/more advanced in the excellent [Serilog Expressions](https://github.com/serilog/serilog-expressions).
+Project is not maintained as all the features can be found in the excellent & more advanced [Serilog Expressions](https://github.com/serilog/serilog-expressions).
 
 
 
